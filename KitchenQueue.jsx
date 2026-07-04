@@ -1,4 +1,4 @@
-import { kitchenQueue } from "../data/dashboardData";
+import { kitchenQueue } from "./dashboardData";
 
 function KitchenQueue() {
   return (

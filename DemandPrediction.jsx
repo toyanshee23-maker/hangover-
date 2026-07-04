@@ -1,4 +1,4 @@
-import { demandPrediction } from "../data/dashboardData";
+import { demandPrediction } from "./dashboardData";
 
 function DemandPrediction() {
   return (

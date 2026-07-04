@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 
-import { hourlyOrders } from "../data/chartData";
+import { hourlyOrders } from "./chartData";
 
 function HourlyOrdersChart() {
   return (

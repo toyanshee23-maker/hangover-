@@ -1,4 +1,4 @@
-import menu from "../data/menu";
+import menu from "./menu";
 
 function AIAnalysis({ customer }) {
   // If no customer has been analyzed yet

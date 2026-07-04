@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 
-import { topSelling } from "../data/chartData";
+import { topSelling } from "./chartData";
 
 function TopSellingChart() {
   return (

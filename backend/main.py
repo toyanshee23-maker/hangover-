@@ -1,10 +1,25 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
-from fastapi import Depends
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
+
 from database import SessionLocal, Customer as DBCustomer
 
+app = FastAPI()
 
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# DB session
 def get_db():
     db = SessionLocal()
     try:
@@ -12,36 +27,27 @@ def get_db():
     finally:
         db.close()
 
-
-
-app=FastAPI()
-
+# Schema
 class CustomerSchema(BaseModel):
     name: str
     phone: str
-    food_ordered: str
     allergy: str
     age: str
-    special_notes: str
 
-
-
-
+# ROOT
 @app.get("/")
 def home():
     return {"message": "RestaurantBrain backend is running"}
 
+# ADD CUSTOMER (ONLY ONE VERSION)
 @app.post("/add-customer")
 def add_customer(customer: CustomerSchema, db: Session = Depends(get_db)):
 
     new_customer = DBCustomer(
         name=customer.name,
         phone=customer.phone,
-        food_ordered=customer.food_ordered,
         allergy=customer.allergy,
-        age=customer.age,
-        special_notes=customer.special_notes
-
+        age=customer.age
     )
 
     db.add(new_customer)
@@ -54,16 +60,15 @@ def add_customer(customer: CustomerSchema, db: Session = Depends(get_db)):
             "id": new_customer.id,
             "name": new_customer.name,
             "phone": new_customer.phone,
-            "food_ordered": new_customer.food_ordered,
             "allergy": new_customer.allergy,
-            "age": new_customer.age,
-            "special_notes": new_customer.special_notes
+            "age": new_customer.age
         }
     }
 
-
+# GET CUSTOMERS
 @app.get("/customers")
 def get_customers(db: Session = Depends(get_db)):
+
     customers = db.query(DBCustomer).all()
 
     return [
@@ -71,11 +76,8 @@ def get_customers(db: Session = Depends(get_db)):
             "id": c.id,
             "name": c.name,
             "phone": c.phone,
-            "food_ordered": c.food_ordered,
             "allergy": c.allergy,
             "age": c.age,
-            "special_notes": c.special_notes
-
         }
         for c in customers
     ]
