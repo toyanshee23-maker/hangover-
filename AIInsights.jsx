@@ -1,4 +1,4 @@
-import { insights } from "../data/dashboardData";
+import { insights } from "./dashboardData";
 
 function AIInsights() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import menu from "../data/menu";
+import menu from "./menu";
 
 function CustomerForm({ onAnalyze }) {
   const [customer, setCustomer] = useState({
@@ -18,10 +18,31 @@ function CustomerForm({ onAnalyze }) {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onAnalyze(customer);
-  };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const response = await fetch("http://127.0.0.1:8000/add-customer", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: customer.name,
+      phone: customer.phone,
+      food_ordered: customer.food_ordered,
+      allergy: customer.allergy,
+      age: customer.age,
+      special_notes: customer.special_notes,
+    }),
+  });
+
+  const result = await response.json();
+
+  console.log(result);
+
+  onAnalyze(result.customer);
+};
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
@@ -92,7 +113,7 @@ function CustomerForm({ onAnalyze }) {
 
           <select
             name="food"
-            value={customer.food}
+            value={customer.food_ordered}
             onChange={handleChange}
             className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none"
           >
@@ -130,7 +151,7 @@ function CustomerForm({ onAnalyze }) {
           <textarea
             rows="4"
             name="notes"
-            value={customer.notes}
+            value={customer.special_notes}
             onChange={handleChange}
             placeholder="Extra cheese, less spicy..."
             className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none"

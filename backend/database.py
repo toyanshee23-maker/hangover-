@@ -17,10 +17,8 @@ class Customer(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     phone = Column(String)
-    food_ordered = Column(String)
     allergy=Column(String)
     age=Column(String)
-    special_notes=Column(String)
 
 # Create the table
 Base.metadata.create_all(bind=engine)

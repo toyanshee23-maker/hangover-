@@ -1,4 +1,4 @@
-import { inventory } from "../data/dashboardData";
+import { inventory } from "./dashboardData";
 
 function InventoryStatus() {
 
